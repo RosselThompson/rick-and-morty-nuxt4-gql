@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     rickAndMortyApi: "",
   },
 
-  modules: ["@nuxt/icon"],
+  modules: ["@nuxt/icon", "@nuxt/image"],
   icon: {
     size: "24",
   },
