@@ -48,12 +48,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-});
+interface AppDrawerProps {
+  isOpen: boolean;
+}
+
+const props = defineProps<AppDrawerProps>();
 
 const emit = defineEmits(["close-drawer"]);
 
