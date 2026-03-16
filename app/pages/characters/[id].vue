@@ -3,7 +3,10 @@
     <UiLoader size="8" />
   </div>
 
-  <UiMessage v-else-if="error" :message="error.message" />
+  <UiMessage
+    v-else-if="error"
+    message="An error occurred retrieving character"
+  />
 
   <div v-else-if="character">
     <header class="mb-4">
