@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white p-6 flex items-center justify-between">
+  <nav class="bg-white p-6 flex items-center justify-between sticky top-0 z-10">
     <div class="flex items-center gap-6">
       <button @click="openDrawer">
         <Icon name="heroicons:bars-3" class="w-6 h-6" />

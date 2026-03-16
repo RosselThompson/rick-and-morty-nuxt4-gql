@@ -1,6 +1,7 @@
 <template>
   <div
-    class="bg-white rounded-2xl overflow-hidden border border-gray-100 w-full"
+    @click="navigateToCharacter"
+    class="bg-white rounded-2xl overflow-hidden border border-gray-100 w-full cursor-pointer"
   >
     <div class="relative h-[250px] w-full">
       <NuxtImg
@@ -82,5 +83,9 @@ const isFavorite = computed(() => {
 
 const toggleFavorite = () => {
   emit("toggleFavorite");
+};
+
+const navigateToCharacter = () => {
+  navigateTo(`/characters/${props.id}`);
 };
 </script>
