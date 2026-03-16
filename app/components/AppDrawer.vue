@@ -10,13 +10,14 @@
     <Transition name="slide">
       <div
         v-if="isOpen"
-        class="fixed top-0 left-0 bottom-0 w-72 bg-white z-50 shadow-2xl flex flex-col"
+        class="fixed top-0 left-0 bottom-0 z-50 flex w-72 flex-col border-r border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
       >
-        <div
-          class="p-6 flex items-center justify-between border-b border-gray-100"
-        >
-          <h2 class="text-xl font-bold text-gray-800">Menu</h2>
-          <button @click="closeDrawer" class="text-gray-500">
+        <div class="flex items-center justify-between border-b border-slate-200 p-6 dark:border-slate-800">
+          <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Menu</h2>
+          <button
+            class="rounded-md p-1 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+            @click="closeDrawer"
+          >
             <Icon name="heroicons:x-mark" class="w-6 h-6" />
           </button>
         </div>
@@ -24,8 +25,8 @@
         <nav class="flex-1 p-4 flex flex-col gap-2">
           <NuxtLink
             to="/characters"
-            class="flex items-center gap-4 px-4 py-3 rounded-lg text-gray-700 transition-colors"
-            active-class="bg-gray-100 text-gray-900 font-semibold"
+            class="flex items-center gap-4 rounded-lg px-4 py-3 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+            active-class="bg-slate-100 text-slate-900 font-semibold dark:bg-slate-800 dark:text-slate-100"
             @click="closeDrawer"
           >
             <Icon name="heroicons:home" class="w-6 h-6 flex-shrink-0" />
@@ -34,8 +35,8 @@
 
           <NuxtLink
             to="/favorites"
-            class="flex items-center gap-4 px-4 py-3 rounded-lg text-gray-700 transition-colors"
-            active-class="bg-gray-100 text-gray-900 font-semibold"
+            class="flex items-center gap-4 rounded-lg px-4 py-3 text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+            active-class="bg-slate-100 text-slate-900 font-semibold dark:bg-slate-800 dark:text-slate-100"
             @click="closeDrawer"
           >
             <Icon name="heroicons:heart" class="w-6 h-6 flex-shrink-0" />

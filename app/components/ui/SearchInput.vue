@@ -1,18 +1,24 @@
 <template>
-  <div class="flex items-center gap-3 bg-gray-100 rounded-md px-4 py-4 w-full">
+  <div
+    class="flex items-center gap-3 bg-gray-100 rounded-md px-4 py-4 w-full transition-colors duration-300 ease-in-out dark:bg-slate-900 dark:text-slate-100"
+  >
     <Icon
       name="heroicons:magnifying-glass"
-      class="text-gray-500 flex-shrink-0"
+      class="text-gray-500 flex-shrink-0 dark:text-slate-400 transition-colors duration-300 ease-in-out"
       size="16"
     />
     <input
       v-model="inputValue"
       :placeholder="placeholder"
       type="text"
-      class="bg-transparent border-none outline-none text-gray-700 placeholder-gray-500 w-full text-base focus:ring-0"
+      class="bg-transparent border-none outline-none text-gray-700 placeholder-gray-500 w-full text-base focus:ring-0 dark:text-slate-100 dark:placeholder-slate-400 transition-colors duration-300 ease-in-out"
     />
     <UiLoader v-if="isLoading" size="4" />
-    <button v-if="inputValue" @click="clearInput">
+    <button
+      v-if="inputValue"
+      class="text-gray-500 transition-colors hover:bg-slate-200 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition-colors duration-300 ease-in-out"
+      @click="clearInput"
+    >
       <Icon name="heroicons:x-mark" size="16" />
     </button>
   </div>

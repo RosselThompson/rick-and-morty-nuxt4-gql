@@ -1,5 +1,7 @@
 <template>
-  <div class="sticky top-20 z-10 bg-white pb-4">
+  <div
+    class="sticky top-20 z-10 bg-white pb-4 transition-colors duration-300 ease-in-out dark:bg-slate-950"
+  >
     <UiSearchInput
       v-model="name"
       placeholder="Search characters by name ..."
@@ -26,12 +28,15 @@
     <p
       v-if="hasMore"
       ref="observerTarget"
-      class="text-center text-gray-500 mb-4 font-semibold text-sm"
+      class="text-center text-slate-500 py-4 font-semibold text-sm dark:text-gray-400"
     >
       Loading More...
     </p>
   </div>
-  <UiMessage v-else-if="error" :message="error.message" />
+  <UiMessage
+    v-else-if="error"
+    message="An error occurred retrieving characters"
+  />
   <UiMessage
     v-else-if="!pending && characters.length === 0"
     message="No characters found"

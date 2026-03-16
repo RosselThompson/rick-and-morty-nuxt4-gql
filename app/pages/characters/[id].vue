@@ -10,17 +10,24 @@
 
   <div v-else-if="character">
     <header class="mb-4">
-      <button @click="goBack" class="flex items-center gap-2">
+      <button
+        @click="goBack"
+        class="flex items-center gap-2 transition-colors duration-300 ease-in-out dark:text-white"
+      >
         <Icon name="heroicons:arrow-left" class="w-6 h-6" />
       </button>
     </header>
 
     <div class="mb-5">
-      <p class="text-gray-600 font-bold tracking-wide text-sm mb-1 uppercase">
+      <p
+        class="text-gray-600 font-bold tracking-wide text-sm mb-1 uppercase transition-colors duration-300 ease-in-out dark:text-gray-400"
+      >
         ID: #{{ character.id }}
       </p>
-      <div class="flex items-center gap-2">
-        <h2 class="text-3xl font-black text-slate-900">
+      <div class="flex items-center justify-between">
+        <h2
+          class="text-3xl font-black text-slate-900 transition-colors duration-300 ease-in-out dark:text-white"
+        >
           {{ character.name }}
         </h2>
         <UiFavoriteButton
@@ -43,38 +50,50 @@
 
     <div class="grid grid-cols-2 gap-4 pb-12">
       <UiWidget title="Status">
-        <div class="flex items-center gap-2 font-medium text-slate-900 text-sm">
+        <div
+          class="flex items-center gap-2 font-medium text-slate-900 text-sm transition-colors duration-300 ease-in-out dark:text-white"
+        >
           <div class="w-2 h-2 rounded-full" :class="statusDotClasses"></div>
           {{ character.status }}
         </div>
       </UiWidget>
 
       <UiWidget title="Species">
-        <p class="font-medium text-slate-900 text-sm truncate">
+        <p
+          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+        >
           {{ character.species }}
         </p>
       </UiWidget>
 
       <UiWidget title="Gender">
-        <p class="font-medium text-slate-900 text-sm truncate">
+        <p
+          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+        >
           {{ character.gender }}
         </p>
       </UiWidget>
 
       <UiWidget title="Apperances">
-        <p class="font-medium text-slate-900 text-sm truncate">
+        <p
+          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+        >
           {{ character.episodeCount }} Episodes
         </p>
       </UiWidget>
 
       <UiWidget title="Origin" class-name="col-span-2">
-        <p class="font-medium text-slate-900 text-sm truncate">
+        <p
+          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+        >
           {{ character.originName || "Unknown" }}
         </p>
       </UiWidget>
 
       <UiWidget title="Last Location Known" class-name="col-span-2">
-        <p class="font-medium text-slate-900 text-sm truncate">
+        <p
+          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+        >
           {{ character.locationName || "Unknown" }}
         </p>
       </UiWidget>

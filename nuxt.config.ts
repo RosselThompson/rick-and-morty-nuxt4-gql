@@ -14,8 +14,11 @@ export default defineNuxtConfig({
     rickAndMortyApi: "",
   },
 
-  modules: ["@nuxt/icon", "@nuxt/image", "@pinia/nuxt"],
+  modules: ["@nuxt/icon", "@nuxt/image", "@pinia/nuxt", "@nuxtjs/color-mode"],
   icon: {
     size: "24",
+  },
+  colorMode: {
+    classSuffix: "",
   },
 });

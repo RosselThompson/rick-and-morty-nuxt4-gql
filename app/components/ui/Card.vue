@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white rounded-2xl overflow-hidden border border-gray-100 w-full cursor-pointer"
+    class="bg-white rounded-2xl overflow-hidden border border-gray-100 w-full cursor-pointer transition-colors duration-300 ease-in-out dark:bg-slate-900 dark:border-slate-800"
   >
     <div @click="navigateToCharacter" class="relative h-[250px] w-full">
       <NuxtImg
@@ -23,10 +23,14 @@
 
     <div class="p-5 flex items-start justify-between">
       <div class="flex-1">
-        <h3 class="font-bold text-lg text-gray-900 mb-1">
+        <h3
+          class="font-bold text-lg text-gray-900 mb-1 dark:text-white transition-colors duration-300 ease-in-out"
+        >
           {{ name }}
         </h3>
-        <p class="text-gray-500 text-sm">
+        <p
+          class="text-gray-500 text-sm dark:text-gray-400 transition-colors duration-300 ease-in-out"
+        >
           {{ species }} from {{ originName || "Unknown" }}
         </p>
       </div>
