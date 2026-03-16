@@ -36,67 +36,70 @@
         />
       </div>
     </div>
+    <div class="md:flex md:gap-4 md:w-full">
+      <div
+        class="w-full h-[250px] mb-8 rounded-2xl overflow-hidden bg-gray-200 md:w-[400px] md:h-[385px]"
+      >
+        <NuxtImg
+          :src="character.image"
+          :alt="character.name"
+          width="800"
+          height="800"
+          sizes="(max-width: 640px) 100vw, 800px"
+          class="w-full h-full object-cover object-center"
+        />
+      </div>
 
-    <div class="w-full h-[250px] mb-8 rounded-2xl overflow-hidden bg-gray-200">
-      <NuxtImg
-        :src="character.image"
-        :alt="character.name"
-        width="800"
-        height="800"
-        sizes="(max-width: 640px) 100vw, 800px"
-        class="w-full h-full object-cover object-center"
-      />
-    </div>
+      <div class="grid grid-cols-2 gap-4 pb-12 md:w-full">
+        <UiWidget title="Status">
+          <div
+            class="flex items-center gap-2 font-medium text-slate-900 text-sm transition-colors duration-300 ease-in-out dark:text-white"
+          >
+            <div class="w-2 h-2 rounded-full" :class="statusDotClasses"></div>
+            {{ character.status }}
+          </div>
+        </UiWidget>
 
-    <div class="grid grid-cols-2 gap-4 pb-12">
-      <UiWidget title="Status">
-        <div
-          class="flex items-center gap-2 font-medium text-slate-900 text-sm transition-colors duration-300 ease-in-out dark:text-white"
-        >
-          <div class="w-2 h-2 rounded-full" :class="statusDotClasses"></div>
-          {{ character.status }}
-        </div>
-      </UiWidget>
+        <UiWidget title="Species">
+          <p
+            class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+          >
+            {{ character.species }}
+          </p>
+        </UiWidget>
 
-      <UiWidget title="Species">
-        <p
-          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
-        >
-          {{ character.species }}
-        </p>
-      </UiWidget>
+        <UiWidget title="Gender">
+          <p
+            class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+          >
+            {{ character.gender }}
+          </p>
+        </UiWidget>
 
-      <UiWidget title="Gender">
-        <p
-          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
-        >
-          {{ character.gender }}
-        </p>
-      </UiWidget>
+        <UiWidget title="Apperances">
+          <p
+            class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+          >
+            {{ character.episodeCount }} Episodes
+          </p>
+        </UiWidget>
 
-      <UiWidget title="Apperances">
-        <p
-          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
-        >
-          {{ character.episodeCount }} Episodes
-        </p>
-      </UiWidget>
+        <UiWidget title="Origin" class-name="col-span-2">
+          <p
+            class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+          >
+            {{ character.originName || "Unknown" }}
+          </p>
+        </UiWidget>
 
-      <UiWidget title="Origin" class-name="col-span-2">
-        <p
-          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
-        >
-          {{ character.originName || "Unknown" }}
-        </p>
-      </UiWidget>
-
-      <UiWidget title="Last Location Known" class-name="col-span-2">
-        <p
-          class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
-        >
-          {{ character.locationName || "Unknown" }}
-        </p>
-      </UiWidget>
+        <UiWidget title="Last Location Known" class-name="col-span-2">
+          <p
+            class="font-medium text-slate-900 text-sm truncate transition-colors duration-300 ease-in-out dark:text-white"
+          >
+            {{ character.locationName || "Unknown" }}
+          </p>
+        </UiWidget>
+      </div>
     </div>
   </div>
 </template>
