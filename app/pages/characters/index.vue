@@ -1,6 +1,10 @@
 <template>
   <div class="sticky top-20 z-10 bg-white pb-4">
-    <UiSearchInput v-model="name" placeholder="Search characters by name ..." />
+    <UiSearchInput
+      v-model="name"
+      placeholder="Search characters by name ..."
+      :is-loading="pending"
+    />
   </div>
   <div v-if="characters.length > 0" class="my-4">
     <div
@@ -24,9 +28,9 @@
     >
       Loading More...
     </p>
-    <UiLoader v-if="pending" />
   </div>
   <p v-else-if="error">{{ error.message }}</p>
+  <p v-else-if="!pending && characters.length === 0">No characters found</p>
 </template>
 
 <script setup lang="ts">
@@ -36,6 +40,7 @@ import { scrollToTop } from "~/utils/scrollToTop";
 const route = useRoute();
 
 const observerTarget = ref<HTMLElement | null>(null);
+const observer = ref<IntersectionObserver | null>(null);
 const appendData = ref(false);
 const page = ref(Number(route.query.page || 1));
 const name = ref(String(route.query.name || "").trim());
@@ -57,12 +62,23 @@ const { data, pending, error } = await useAsyncData(
   },
 );
 
+const getNewItems = (newRecords: GetAllCharacterItem[]) => {
+  const existingIds = new Set(
+    characters.value.map((character) => character.id),
+  );
+  const nextItems = newRecords.filter(
+    (character) => !existingIds.has(character.id),
+  );
+  return nextItems;
+};
+
 watch(
   data,
   (newData) => {
     if (!newData) return;
     if (appendData.value) {
-      characters.value.push(...newData.results);
+      const nextItems = getNewItems(newData.results);
+      characters.value.push(...nextItems);
     } else {
       scrollToTop();
       characters.value = newData.results;
@@ -73,22 +89,27 @@ watch(
 );
 
 watch(debouncedSearch, (newDebouncedSearch, oldDebouncedSearch) => {
+  if (newDebouncedSearch === oldDebouncedSearch) return;
   page.value = 1;
-  appendData.value = newDebouncedSearch === oldDebouncedSearch;
+  appendData.value = false;
 });
 
 watch(observerTarget, (el, _, onCleanup) => {
   if (!el) return;
-  const observer = new IntersectionObserver((entries) => {
+  const currentObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting && !pending.value && hasMore.value) {
         page.value++;
       }
     });
   });
-  observer.observe(el);
+  currentObserver.observe(el);
+  observer.value = currentObserver;
   onCleanup(() => {
-    observer.disconnect();
+    currentObserver.disconnect();
+    if (observer.value === currentObserver) {
+      observer.value = null;
+    }
   });
 });
 

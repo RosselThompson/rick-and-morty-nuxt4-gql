@@ -1,9 +1,8 @@
 <template>
   <div
-    @click="navigateToCharacter"
     class="bg-white rounded-2xl overflow-hidden border border-gray-100 w-full cursor-pointer"
   >
-    <div class="relative h-[250px] w-full">
+    <div @click="navigateToCharacter" class="relative h-[250px] w-full">
       <NuxtImg
         :src="image"
         :alt="name"
