@@ -48,33 +48,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { GetAllCharacterItem } from "#shared/types/characters.interface";
+import { getStatusBadgeClass, getStatusDotClass } from "~/utils/statusClasses";
 
 const props = defineProps<GetAllCharacterItem>();
 
 const emit = defineEmits(["toggleFavorite"]);
 
-const statusBadgeClasses = computed(() => {
-  const statusLower = props.status.toLowerCase();
-  if (statusLower === "alive") {
-    return "bg-[#E8F5E9] text-[#2E7D32]";
-  } else if (statusLower === "dead") {
-    return "bg-[#FFEBEE] text-[#C62828]";
-  } else {
-    // Unknown or other status
-    return "bg-gray-100 text-gray-700";
-  }
-});
+const statusBadgeClasses = computed(() => getStatusBadgeClass(props.status));
 
-const statusDotClasses = computed(() => {
-  const statusLower = props.status.toLowerCase();
-  if (statusLower === "alive") {
-    return "bg-[#4CAF50]";
-  } else if (statusLower === "dead") {
-    return "bg-[#F44336]";
-  } else {
-    return "bg-gray-500";
-  }
-});
+const statusDotClasses = computed(() => getStatusDotClass(props.status));
 
 const isFavorite = computed(() => {
   return props.id === "2"; //MOCK

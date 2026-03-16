@@ -36,6 +36,10 @@
 <script setup lang="ts">
 import { useDebounce } from "~/composables/useDebounce";
 import { scrollToTop } from "~/utils/scrollToTop";
+import type {
+  GetAllCharacterItem,
+  GetAllCharactersApiResponse,
+} from "#shared/types/characters.interface";
 
 const route = useRoute();
 
@@ -48,19 +52,20 @@ const characters = ref<GetAllCharacterItem[]>([]);
 
 const debouncedSearch = useDebounce(name, 600);
 
-const { data, pending, error } = await useAsyncData(
-  () => `characters:${page.value}:${debouncedSearch.value}`,
-  () =>
-    $fetch("/api/characters", {
-      params: {
-        page: page.value,
-        ...(debouncedSearch.value ? { name: debouncedSearch.value } : {}),
-      },
-    }),
-  {
-    watch: [page, debouncedSearch],
-  },
-);
+const { data, pending, error } =
+  await useAsyncData<GetAllCharactersApiResponse>(
+    () => `characters:${page.value}:${debouncedSearch.value}`,
+    () =>
+      $fetch("/api/characters", {
+        params: {
+          page: page.value,
+          ...(debouncedSearch.value ? { name: debouncedSearch.value } : {}),
+        },
+      }),
+    {
+      watch: [page, debouncedSearch],
+    },
+  );
 
 const getNewItems = (newRecords: GetAllCharacterItem[]) => {
   const existingIds = new Set(

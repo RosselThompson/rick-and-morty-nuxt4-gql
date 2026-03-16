@@ -1,16 +1,99 @@
 <template>
-  <button
-    @click="goBack"
-    class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200"
-  >
-    <Icon name="heroicons:arrow-left" class="w-6 h-6" />
-    <span class="font-semibold">Back</span>
-  </button>
-  <p>Character: {{ $route.params.id }}</p>
+  <div v-if="pending" class="flex justify-center items-center py-20">
+    <UiLoader size="8" />
+  </div>
+
+  <div v-else-if="error" class="text-center py-10">
+    <p>Error loading character details.</p>
+  </div>
+
+  <div v-else-if="character">
+    <header class="mb-4">
+      <button @click="goBack" class="flex items-center gap-2">
+        <Icon name="heroicons:arrow-left" class="w-6 h-6" />
+      </button>
+    </header>
+
+    <div class="mb-5">
+      <p class="text-gray-600 font-bold tracking-wide text-sm mb-1 uppercase">
+        ID: #{{ character.id }}
+      </p>
+      <h2 class="text-3xl font-black text-slate-900">
+        {{ character.name }}
+      </h2>
+    </div>
+
+    <div class="w-full h-[250px] mb-8 rounded-2xl overflow-hidden bg-gray-200">
+      <NuxtImg
+        :src="character.image"
+        :alt="character.name"
+        width="800"
+        height="800"
+        sizes="(max-width: 640px) 100vw, 800px"
+        class="w-full h-full object-cover object-center"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 pb-12">
+      <UiWidget title="Status">
+        <div class="flex items-center gap-2 font-medium text-slate-900 text-sm">
+          <div class="w-2 h-2 rounded-full" :class="statusDotClasses"></div>
+          {{ character.status }}
+        </div>
+      </UiWidget>
+
+      <UiWidget title="Species">
+        <p class="font-medium text-slate-900 text-sm truncate">
+          {{ character.species }}
+        </p>
+      </UiWidget>
+
+      <UiWidget title="Gender">
+        <p class="font-medium text-slate-900 text-sm truncate">
+          {{ character.gender }}
+        </p>
+      </UiWidget>
+
+      <UiWidget title="Apperances">
+        <p class="font-medium text-slate-900 text-sm truncate">
+          {{ character.episodeCount }} Episodes
+        </p>
+      </UiWidget>
+
+      <UiWidget title="Origin" class-name="col-span-2">
+        <p class="font-medium text-slate-900 text-sm truncate">
+          {{ character.originName || "Unknown" }}
+        </p>
+      </UiWidget>
+
+      <UiWidget title="Last Location Known" class-name="col-span-2">
+        <p class="font-medium text-slate-900 text-sm truncate">
+          {{ character.locationName || "Unknown" }}
+        </p>
+      </UiWidget>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
+import type { GetOneCharacterApiResponse } from "#shared/types/characters.interface";
+
 const router = useRouter();
+const route = useRoute();
+const id = route.params.id as string;
+
+const {
+  data: character,
+  pending,
+  error,
+} = await useAsyncData<GetOneCharacterApiResponse>(
+  () => `characters:${id}`,
+  () => $fetch(`/api/characters/${id}`),
+);
+
+const statusDotClasses = computed(() =>
+  getStatusDotClass(character.value?.status),
+);
 
 const goBack = () => {
   router.back();

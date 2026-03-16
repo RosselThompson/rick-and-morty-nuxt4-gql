@@ -11,10 +11,7 @@
       type="text"
       class="bg-transparent border-none outline-none text-gray-700 placeholder-gray-500 w-full text-base focus:ring-0"
     />
-    <div
-      v-if="isLoading"
-      class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400"
-    ></div>
+    <UiLoader v-if="isLoading" size="4" />
     <button v-if="inputValue" @click="clearInput">
       <Icon name="heroicons:x-mark" size="16" />
     </button>
