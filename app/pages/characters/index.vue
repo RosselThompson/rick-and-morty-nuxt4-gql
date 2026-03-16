@@ -19,6 +19,8 @@
         :species="character.species"
         :status="character.status"
         :origin-name="character.originName"
+        :is-favorite="favoritesStore.isFavorite(character.id)"
+        @toggle-favorite="favoritesStore.toggleFavorite(character)"
       />
     </div>
     <p
@@ -51,6 +53,7 @@ const name = ref(String(route.query.name || "").trim());
 const characters = ref<GetAllCharacterItem[]>([]);
 
 const debouncedSearch = useDebounce(name, 600);
+const favoritesStore = useFavoritesStore();
 
 const { data, pending, error } =
   await useAsyncData<GetAllCharactersApiResponse>(

@@ -18,9 +18,15 @@
       <p class="text-gray-600 font-bold tracking-wide text-sm mb-1 uppercase">
         ID: #{{ character.id }}
       </p>
-      <h2 class="text-3xl font-black text-slate-900">
-        {{ character.name }}
-      </h2>
+      <div class="flex items-center gap-2">
+        <h2 class="text-3xl font-black text-slate-900">
+          {{ character.name }}
+        </h2>
+        <UiFavoriteButton
+          :is-favorite="favoritesStore.isFavorite(character.id)"
+          @toggle-favorite="toggleFavorite(character)"
+        />
+      </div>
     </div>
 
     <div class="w-full h-[250px] mb-8 rounded-2xl overflow-hidden bg-gray-200">
@@ -80,6 +86,7 @@ import type { GetOneCharacterApiResponse } from "#shared/types/characters.interf
 
 const router = useRouter();
 const route = useRoute();
+const favoritesStore = useFavoritesStore();
 const id = route.params.id as string;
 
 const {
@@ -97,5 +104,17 @@ const statusDotClasses = computed(() =>
 
 const goBack = () => {
   router.back();
+};
+
+const toggleFavorite = (character: GetOneCharacterApiResponse) => {
+  const mappedCharacter: GetAllCharacterItem = {
+    id: character.id,
+    name: character.name,
+    image: character.image,
+    species: character.species,
+    status: character.status,
+    originName: character.originName,
+  };
+  favoritesStore.toggleFavorite(mappedCharacter);
 };
 </script>

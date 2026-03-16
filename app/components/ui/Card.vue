@@ -31,16 +31,10 @@
         </p>
       </div>
 
-      <button
-        @click="toggleFavorite"
-        class="flex-shrink-0 ml-4 w-12 h-12 bg-gray-100 text-gray-400 rounded-xl flex items-center justify-center"
-        :class="{ 'text-yellow-500': isFavorite }"
-      >
-        <Icon
-          :name="isFavorite ? 'heroicons:star-solid' : 'heroicons:star'"
-          class="w-6 h-6"
-        />
-      </button>
+      <UiFavoriteButton
+        :is-favorite="isFavorite"
+        @toggle-favorite="toggleFavorite"
+      />
     </div>
   </div>
 </template>
@@ -50,17 +44,17 @@ import { computed } from "vue";
 import type { GetAllCharacterItem } from "#shared/types/characters.interface";
 import { getStatusBadgeClass, getStatusDotClass } from "~/utils/statusClasses";
 
-const props = defineProps<GetAllCharacterItem>();
+interface CardProps extends GetAllCharacterItem {
+  isFavorite: boolean;
+}
+
+const props = defineProps<CardProps>();
 
 const emit = defineEmits(["toggleFavorite"]);
 
 const statusBadgeClasses = computed(() => getStatusBadgeClass(props.status));
 
 const statusDotClasses = computed(() => getStatusDotClass(props.status));
-
-const isFavorite = computed(() => {
-  return props.id === "2"; //MOCK
-});
 
 const toggleFavorite = () => {
   emit("toggleFavorite");
