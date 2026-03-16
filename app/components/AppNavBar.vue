@@ -15,15 +15,20 @@
         Rick and Morty App
       </h1>
     </div>
-    <button
-      class="rounded-md p-1 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300 ease-in-out"
-      @click="toggleTheme"
-    >
-      <Icon
-        :name="theme === 'dark' ? 'heroicons:sun' : 'heroicons:moon'"
-        class="w-6 h-6"
-      />
-    </button>
+    <ClientOnly>
+      <button
+        class="rounded-md p-1 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300 ease-in-out"
+        @click="toggleTheme"
+      >
+        <Icon
+          :name="theme === 'dark' ? 'heroicons:sun' : 'heroicons:moon'"
+          class="w-6 h-6"
+        />
+      </button>
+      <template #fallback>
+        <div class="w-6 h-6 animate-pulse">...</div>
+      </template>
+    </ClientOnly>
   </nav>
 </template>
 

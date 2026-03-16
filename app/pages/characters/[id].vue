@@ -1,6 +1,6 @@
 <template>
   <div v-if="pending" class="flex justify-center items-center py-20">
-    <UiLoader size="8" />
+    <UiLoader />
   </div>
 
   <UiMessage
@@ -8,11 +8,11 @@
     message="An error occurred retrieving character"
   />
 
-  <div v-else-if="character">
+  <div v-else-if="character" class="max-w-5xl mx-auto">
     <header class="mb-4">
       <button
         @click="goBack"
-        class="flex items-center gap-2 transition-colors duration-300 ease-in-out dark:text-white"
+        class="flex items-center gap-2 rounded-lg p-2 cursor-pointer transition-colors duration-300 ease-in-out dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <Icon name="heroicons:arrow-left" class="w-6 h-6" />
       </button>
@@ -31,6 +31,7 @@
           {{ character.name }}
         </h2>
         <UiFavoriteButton
+          class="ml-4"
           :is-favorite="favoritesStore.isFavorite(character.id)"
           @toggle-favorite="toggleFavorite(character)"
         />

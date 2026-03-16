@@ -1,6 +1,6 @@
 <template>
   <div
-    class="sticky top-20 z-10 bg-white pb-4 transition-colors duration-300 ease-in-out dark:bg-slate-950"
+    class="sticky top-20 z-10 bg-white pb-4 transition-colors duration-300 ease-in-out md:static dark:bg-slate-950"
   >
     <UiSearchInput
       v-model="name"
@@ -8,30 +8,8 @@
       :is-loading="pending"
     />
   </div>
-  <div v-if="characters.length > 0" class="my-4">
-    <div
-      class="flex flex-col gap-4 justify-center items-center md:grid md:grid-cols-2 lg:grid-cols-3"
-    >
-      <UiCard
-        v-for="character in characters"
-        :key="character.id"
-        :id="character.id"
-        :image="character.image"
-        :name="character.name"
-        :species="character.species"
-        :status="character.status"
-        :origin-name="character.originName"
-        :is-favorite="favoritesStore.isFavorite(character.id)"
-        @toggle-favorite="favoritesStore.toggleFavorite(character)"
-      />
-    </div>
-    <p
-      v-if="hasMore"
-      ref="observerTarget"
-      class="text-center text-slate-500 py-4 font-semibold text-sm dark:text-gray-400"
-    >
-      Loading More...
-    </p>
+  <div v-if="characters.length > 0" class="py-4">
+    <CharacterList :characters="characters" :pagination-info="data?.info" />
   </div>
   <UiMessage
     v-else-if="error"
@@ -50,31 +28,35 @@ import type {
   GetAllCharacterItem,
   GetAllCharactersApiResponse,
 } from "#shared/types/characters.interface";
+import CharacterList from "~/components/character/CharacterList.vue";
 
 const route = useRoute();
+const router = useRouter();
 
-const observerTarget = ref<HTMLElement | null>(null);
-const observer = ref<IntersectionObserver | null>(null);
 const appendData = ref(false);
-const page = ref(Number(route.query.page || 1));
 const name = ref(String(route.query.name || "").trim());
 const characters = ref<GetAllCharacterItem[]>([]);
 
 const debouncedSearch = useDebounce(name, 600);
-const favoritesStore = useFavoritesStore();
+const pageQuery = computed(() => Number(route.query.page || 1));
+const nameQuery = computed(() => String(route.query.name || "").trim());
+const isMobileQuery = computed(() => route.query.isMobile === "true");
+const queryKey = computed(
+  () => `${isMobileQuery.value}:${pageQuery.value}:${nameQuery.value}`,
+);
 
 const { data, pending, error } =
   await useAsyncData<GetAllCharactersApiResponse>(
-    () => `characters:${page.value}:${debouncedSearch.value}`,
+    () => `characters:${queryKey.value}`,
     () =>
       $fetch("/api/characters", {
         params: {
-          page: page.value,
-          ...(debouncedSearch.value ? { name: debouncedSearch.value } : {}),
+          page: pageQuery.value,
+          ...(nameQuery.value ? { name: nameQuery.value } : {}),
         },
       }),
     {
-      watch: [page, debouncedSearch],
+      watch: [queryKey],
     },
   );
 
@@ -92,7 +74,7 @@ watch(
   data,
   (newData) => {
     if (!newData) return;
-    if (appendData.value) {
+    if (isMobileQuery.value && appendData.value) {
       const nextItems = getNewItems(newData.results);
       characters.value.push(...nextItems);
     } else {
@@ -106,28 +88,19 @@ watch(
 
 watch(debouncedSearch, (newDebouncedSearch, oldDebouncedSearch) => {
   if (newDebouncedSearch === oldDebouncedSearch) return;
-  page.value = 1;
   appendData.value = false;
-});
+  const nextQuery = {
+    ...(isMobileQuery.value ? { isMobile: "true" } : {}),
+    page: 1,
+    ...(newDebouncedSearch ? { name: newDebouncedSearch } : {}),
+  };
+  const currentQuery = {
+    ...(isMobileQuery.value ? { isMobile: "true" } : {}),
+    page: pageQuery.value,
+    ...(nameQuery.value ? { name: nameQuery.value } : {}),
+  };
 
-watch(observerTarget, (el, _, onCleanup) => {
-  if (!el) return;
-  const currentObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && !pending.value && hasMore.value) {
-        page.value++;
-      }
-    });
-  });
-  currentObserver.observe(el);
-  observer.value = currentObserver;
-  onCleanup(() => {
-    currentObserver.disconnect();
-    if (observer.value === currentObserver) {
-      observer.value = null;
-    }
-  });
+  if (JSON.stringify(nextQuery) === JSON.stringify(currentQuery)) return;
+  router.replace({ query: nextQuery });
 });
-
-const hasMore = computed(() => data.value?.info.next !== null);
 </script>

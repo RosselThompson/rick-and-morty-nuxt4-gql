@@ -13,7 +13,7 @@
       type="text"
       class="bg-transparent border-none outline-none text-gray-700 placeholder-gray-500 w-full text-base focus:ring-0 dark:text-slate-100 dark:placeholder-slate-400 transition-colors duration-300 ease-in-out"
     />
-    <UiLoader v-if="isLoading" size="4" />
+    <UiLoader v-if="isLoading" />
     <button
       v-if="inputValue"
       class="text-gray-500 transition-colors hover:bg-slate-200 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition-colors duration-300 ease-in-out"

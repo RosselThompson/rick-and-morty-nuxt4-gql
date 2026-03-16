@@ -17,7 +17,9 @@ import AppDrawer from "~/components/AppDrawer.vue";
 import type { Theme } from "~/types/theme";
 
 const colorMode = useColorMode();
-const theme = computed<Theme>(() => colorMode.preference as Theme);
+const theme = computed<Theme>(() =>
+  colorMode.value === "dark" ? "dark" : "light",
+);
 
 const isDrawerOpen = ref(false);
 
@@ -26,6 +28,6 @@ const toggleMenu = () => {
 };
 
 const toggleTheme = () => {
-  colorMode.preference = colorMode.preference === "dark" ? "light" : "dark";
+  colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
 };
 </script>

@@ -12,7 +12,7 @@
         :species="character.species"
         :status="character.status"
         :origin-name="character.originName"
-        :is-favorite="favoritesStore.isFavorite(character.id)"
+        :is-favorite="true"
         @toggle-favorite="favoritesStore.toggleFavorite(character)"
       />
     </div>

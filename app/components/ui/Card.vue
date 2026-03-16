@@ -36,6 +36,7 @@
       </div>
 
       <UiFavoriteButton
+        class="ml-4"
         :is-favorite="isFavorite"
         @toggle-favorite="toggleFavorite"
       />
