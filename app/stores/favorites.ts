@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
+import { defineStore, skipHydrate } from "pinia";
 import { ref, watch } from "vue";
 import type { GetAllCharacterItem } from "#shared/types/characters.interface";
 
 export const useFavoritesStore = defineStore("favorites", () => {
-  const favorites = ref<GetAllCharacterItem[]>([]);
+  const favorites = skipHydrate(ref<GetAllCharacterItem[]>([]));
   if (import.meta.client) {
     const stored = localStorage.getItem("favorites");
     if (stored) {
