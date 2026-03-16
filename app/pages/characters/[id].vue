@@ -3,9 +3,7 @@
     <UiLoader size="8" />
   </div>
 
-  <div v-else-if="error" class="text-center py-10">
-    <p>Error loading character details.</p>
-  </div>
+  <UiMessage v-else-if="error" :message="error.message" />
 
   <div v-else-if="character">
     <header class="mb-4">

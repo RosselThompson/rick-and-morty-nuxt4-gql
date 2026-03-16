@@ -18,9 +18,7 @@
     </div>
   </div>
   <div v-else>
-    <p class="text-center text-gray-500 mb-4 font-semibold text-sm">
-      No favorites found
-    </p>
+    <UiMessage message="No favorites found" />
   </div>
 </template>
 

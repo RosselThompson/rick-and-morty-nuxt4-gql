@@ -31,8 +31,11 @@
       Loading More...
     </p>
   </div>
-  <p v-else-if="error">{{ error.message }}</p>
-  <p v-else-if="!pending && characters.length === 0">No characters found</p>
+  <UiMessage v-else-if="error" :message="error.message" />
+  <UiMessage
+    v-else-if="!pending && characters.length === 0"
+    message="No characters found"
+  />
 </template>
 
 <script setup lang="ts">
