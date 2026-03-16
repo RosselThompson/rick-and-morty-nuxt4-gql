@@ -1,9 +1,6 @@
 <template>
   <div class="sticky top-20 z-10 bg-white pb-4">
-    <UiSearchInput
-      v-model="searchValue"
-      placeholder="Search characters by name ..."
-    />
+    <UiSearchInput v-model="name" placeholder="Search characters by name ..." />
   </div>
   <div v-if="characters.length > 0" class="my-4">
     <div
@@ -30,43 +27,57 @@
     <UiLoader v-if="pending" />
   </div>
   <p v-else-if="error">{{ error.message }}</p>
-  <p v-else-if="characters.length === 0">No characters found</p>
 </template>
 
 <script setup lang="ts">
+import { useDebounce } from "~/composables/useDebounce";
+import { scrollToTop } from "~/utils/scrollToTop";
+
 const route = useRoute();
 
 const observerTarget = ref<HTMLElement | null>(null);
+const appendData = ref(false);
 const page = ref(Number(route.query.page || 1));
 const name = ref(String(route.query.name || "").trim());
-const searchValue = ref(name.value);
 const characters = ref<GetAllCharacterItem[]>([]);
 
+const debouncedSearch = useDebounce(name, 600);
+
 const { data, pending, error } = await useAsyncData(
-  () => `characters:${page.value}:${name.value}`,
+  () => `characters:${page.value}:${debouncedSearch.value}`,
   () =>
     $fetch("/api/characters", {
       params: {
         page: page.value,
-        ...(name.value ? { name: name.value } : {}),
+        ...(debouncedSearch.value ? { name: debouncedSearch.value } : {}),
       },
     }),
   {
-    watch: [page, name],
+    watch: [page, debouncedSearch],
   },
 );
-const hasMore = computed(() => data.value?.info.next !== null);
 
 watch(
   data,
   (newData) => {
     if (!newData) return;
-    characters.value.push(...newData.results);
+    if (appendData.value) {
+      characters.value.push(...newData.results);
+    } else {
+      scrollToTop();
+      characters.value = newData.results;
+    }
+    appendData.value = true;
   },
   { immediate: true },
 );
 
-watch(observerTarget, (el) => {
+watch(debouncedSearch, (newDebouncedSearch, oldDebouncedSearch) => {
+  page.value = 1;
+  appendData.value = newDebouncedSearch === oldDebouncedSearch;
+});
+
+watch(observerTarget, (el, _, onCleanup) => {
   if (!el) return;
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -76,5 +87,10 @@ watch(observerTarget, (el) => {
     });
   });
   observer.observe(el);
+  onCleanup(() => {
+    observer.disconnect();
+  });
 });
+
+const hasMore = computed(() => data.value?.info.next !== null);
 </script>
