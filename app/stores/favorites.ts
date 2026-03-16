@@ -4,7 +4,7 @@ import type { GetAllCharacterItem } from "#shared/types/characters.interface";
 
 export const useFavoritesStore = defineStore("favorites", () => {
   const favorites = skipHydrate(ref<GetAllCharacterItem[]>([]));
-  if (import.meta.client) {
+  if (typeof window !== "undefined") {
     const stored = localStorage.getItem("favorites");
     if (stored) {
       try {
@@ -40,7 +40,7 @@ export const useFavoritesStore = defineStore("favorites", () => {
   watch(
     favorites,
     (newVal) => {
-      if (import.meta.client) {
+      if (typeof window !== "undefined") {
         localStorage.setItem("favorites", JSON.stringify(newVal));
       }
     },

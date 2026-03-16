@@ -1,3 +1,6 @@
+import { onScopeDispose, ref, watch } from "vue";
+import type { Ref } from "vue";
+
 export function useDebounce<T>(source: Ref<T>, delay: number = 400) {
   const debounced = ref(source.value) as Ref<T>;
   let timer: ReturnType<typeof setTimeout> | null = null;
@@ -10,7 +13,6 @@ export function useDebounce<T>(source: Ref<T>, delay: number = 400) {
         debounced.value = value;
       }, delay);
     },
-    { flush: "post" },
   );
 
   onScopeDispose(() => {
